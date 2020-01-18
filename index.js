@@ -33,6 +33,7 @@ async function execAndGetOutput(command) {
 }
 
 async function run() {
+    console.log("cwd");
     console.log("ENV:");
     console.log(process.env.HOME);
     console.log(process.env.HOMEPATH);
@@ -43,7 +44,7 @@ async function run() {
         console.log("latestRelease = " + JSON.stringify(latestRelease));
         const assets = latestRelease['assets'];
         const downloadUrl = assets.find(asset => asset['name'].endsWith('all-deps.jar'))['browser_download_url'];
-        await exec.exec(`curl -sL ${downloadUrl} -o ${executable}`);
+        await exec.exec(`curl -sL ${downloadUrl} -o ${executable}`, null, { cwd: home });
         await executeGJF('--version', null);
         const args = core.getInput('args');
         const files = await (await glob.create(core.getInput('files'))).glob();
