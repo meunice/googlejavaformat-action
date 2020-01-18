@@ -2,20 +2,22 @@ const core = require('@actions/core');
 const exec = require('@actions/exec');
 const glob = require('@actions/glob');
 
-const executable = `${process.env.HOME || process.env.HOMEPATH}/google-java-format.jar`;
+const home = `${process.env.HOME || process.env.HOMEPATH}`;
+const executable = "google-java-format.jar";
 
 async function executeGJF(args, files) {
     let arguments = ['-jar', executable].concat(args.split(" "));
     if (files !== null) {
         for (const file of files) { arguments.push(file); }
     }
-    const options = { cwd: process.env.GITHUB_WORKSPACE }
+    const options = { cwd: home }
     await exec.exec('java', arguments, options);
 }
 
 async function execAndGetOutput(command) {
     let output = '';
     const options = {
+        cwd: home,
         silent: true,
         ignoreReturnCode: false,
         listeners: {
