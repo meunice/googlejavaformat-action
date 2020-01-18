@@ -19,7 +19,10 @@ async function execAndGetOutput(command) {
         silent: true,
         ignoreReturnCode: false,
         listeners: {
-            stdout: (data) => output += data.toString(),
+            stdout: (data) => {
+                console.log(data.toString());
+                output += data.toString();
+            },
             stderr: (data) => console.error(data)
         }
     };
@@ -28,9 +31,12 @@ async function execAndGetOutput(command) {
 }
 
 async function run() {
+    console.log(process.env.HOME);
+    console.log(process.env.HOMEPATH);
     try {
         const urlRelease = 'https://api.github.com/repos/google/google-java-format/releases/latest';
         const latestRelease = JSON.parse(await execAndGetOutput(`curl -s "${urlRelease}"`));
+        console.log("latestRelease = " + JSON.stringify(latestRelease));
         const assets = latestRelease['assets'];
         const downloadUrl = assets.find(asset => asset['name'].endsWith('all-deps.jar'))['browser_download_url'];
         await exec.exec(`curl -sL ${downloadUrl} -o ${executable}`);
