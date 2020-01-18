@@ -31,8 +31,10 @@ async function execAndGetOutput(command) {
 }
 
 async function run() {
+    console.log("ENV:");
     console.log(process.env.HOME);
     console.log(process.env.HOMEPATH);
+    console.log("END ENV");
     try {
         const urlRelease = 'https://api.github.com/repos/google/google-java-format/releases/latest';
         const latestRelease = JSON.parse(await execAndGetOutput(`curl -s "${urlRelease}"`));
