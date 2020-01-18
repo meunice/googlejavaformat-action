@@ -2,7 +2,7 @@ const core = require('@actions/core');
 const exec = require('@actions/exec');
 const glob = require('@actions/glob');
 
-const executable = `${process.env.HOME}/google-java-format.jar`;
+const executable = `${process.env.HOME || process.env.HOMEPATH}/google-java-format.jar`;
 
 async function executeGJF(args, files) {
     let arguments = ['-jar', executable].concat(args.split(" "));
